@@ -6,8 +6,6 @@ import pydeck as pdk
 import numpy as np
 import seaborn as sns  # Use Seaborn for better color palettes
 
-# Set your Mapbox API key
-pdk.settings.mapbox_api_key = 'YOUR_MAPBOX_ACCESS_TOKEN'  # Replace with your Mapbox token
 
 st.title('Real Estate Data Explorer')
 
@@ -15,9 +13,9 @@ st.title('Real Estate Data Explorer')
 st.write("""
 Enter a query about real estate properties in New York City. You can ask for properties based on different criteria such as price, location, or size. 
 Here are some example prompts you can try:
-- "Show me the top 10 most expensive properties in Manhattan."
-- "Find residential properties in Queens larger than 2000 sq ft."
-- "List all office spaces available in Brooklyn."
+- Show me the top 10 most expensive properties in Manhattan
+- Find residential properties within 5 miles of Queens
+- List all office spaces available in Brooklyn larger than 2000 sq ft
 """)
 
 # Global property type and color mapping using Seaborn for better colors
@@ -147,11 +145,27 @@ if user_prompt:
                 # Display the horizontal circular legend above the map
                 st.markdown(create_legend(), unsafe_allow_html=True)
 
-                # Define the initial view state of the map (reduce map height)
+                # Calculate dynamic zoom level and adjust view state
+                if len(df_filtered) > 1:
+                    # Calculate bounds
+                    lat_range = df_filtered['latitude'].max() - df_filtered['latitude'].min()
+                    lon_range = df_filtered['longitude'].max() - df_filtered['longitude'].min()
+
+                    # Set zoom level based on the range of latitudes and longitudes
+                    if max(lat_range, lon_range) < 0.05:
+                        zoom = 13  # Very close data points
+                    elif max(lat_range, lon_range) < 0.2:
+                        zoom = 11
+                    else:
+                        zoom = 9  # Spread out data points
+                else:
+                    zoom = 12  # Default zoom for single point
+
+                # Define the initial view state of the map
                 view_state = pdk.ViewState(
                     latitude=df_filtered['latitude'].mean(),
                     longitude=df_filtered['longitude'].mean(),
-                    zoom=11,
+                    zoom=zoom,
                     pitch=50,
                     bearing=0,
                     controller=True  # Enable map controls
