@@ -1,0 +1,41 @@
+{
+    "examples": [
+      {
+        "prompt": "Show me all residential properties in Manhattan listed after January 1, 2023, with more than 2 bedrooms.",
+        "sql_query": "SELECT * FROM `ai-demos-439118.real_estate_data.new_york` WHERE property_type = 'Residential' AND city = 'Manhattan' AND date_listed > '2023-01-01' AND bedrooms > 2;"
+      },
+      {
+        "prompt": "List the addresses and prices of commercial properties in New York City priced over $2,000,000.",
+        "sql_query": "SELECT address, price FROM `ai-demos-439118.real_estate_data.new_york` WHERE property_type = 'Commercial' AND city = 'New York' AND price > 2000000;"
+      },
+      {
+        "prompt": "Find all properties in zip code 10001 that were built before the year 2000.",
+        "sql_query": "SELECT * FROM `ai-demos-439118.real_estate_data.new_york` WHERE zip_code = '10001' AND year_built < 2000;"
+      },
+      {
+        "prompt": "Calculate the average price of residential properties in Brooklyn.",
+        "sql_query": "SELECT AVG(price) AS average_price FROM `ai-demos-439118.real_estate_data.new_york` WHERE property_type = 'Residential' AND city = 'Brooklyn';"
+      },
+      {
+        "prompt": "How many industrial properties are listed in Queens?",
+        "sql_query": "SELECT COUNT(*) AS industrial_property_count FROM `ai-demos-439118.real_estate_data.new_york` WHERE property_type = 'Industrial' AND city = 'Queens';"
+      },
+      {
+        "prompt": "List all residential properties with at least 3 bedrooms and 2 bathrooms, priced under $1,500,000.",
+        "sql_query": "SELECT * FROM `ai-demos-439118.real_estate_data.new_york` WHERE property_type = 'Residential' AND bedrooms >= 3 AND bathrooms >= 2 AND price < 1500000;"
+      },
+      {
+        "prompt": "Show the property IDs and addresses of properties within 1 mile of Times Square.",
+        "sql_query": "SELECT property_id, address FROM `ai-demos-439118.real_estate_data.new_york` WHERE ST_DISTANCE(ST_GEOGPOINT(longitude, latitude), ST_GEOGPOINT(-73.9855, 40.7580)) <= 1609.34;"
+      },
+      {
+        "prompt": "Find properties listed in the last 90 days.",
+        "sql_query": "SELECT * FROM `ai-demos-439118.real_estate_data.new_york` WHERE date_listed >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY);"
+      },
+      {
+        "prompt": "List the top 5 most expensive residential properties in New York state.",
+        "sql_query": "SELECT * FROM `ai-demos-439118.real_estate_data.new_york` WHERE property_type = 'Residential' AND state = 'NY' ORDER BY price DESC LIMIT 5;"
+      }
+    ]
+  }
+  
